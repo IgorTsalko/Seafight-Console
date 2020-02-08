@@ -1,4 +1,4 @@
-import java.io.IOException;
+package com.seafight.my_first_game;
 
 public class Player {
     private String playerName;

@@ -1,3 +1,5 @@
+package com.seafight.my_first_game;
+
 public class Robot extends Player {
     public Robot(String name) {
         super(name);

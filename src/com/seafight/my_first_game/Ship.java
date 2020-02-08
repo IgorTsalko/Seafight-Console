@@ -1,3 +1,5 @@
+package com.seafight.my_first_game;
+
 import java.util.ArrayList;
 
 public class Ship {
