@@ -6,29 +6,32 @@ import java.io.InputStreamReader;
 
 public class Game {
 
+    private static Game seaFight = new Game();
+
     public static void main(String[] args) {
-        try {
-            startGame();
+        seaFight.startGame();
+    }
+
+    private void startGame() {
+        try (
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))
+        ) {
+            System.out.print("Enter player name, please: ");
+            Player user = new Player(reader.readLine());
+            Robot enemy = new Robot("Enemy");
+            System.out.println("Start game!");
+
+            System.out.println("Player ships " + user.getPlayerName() + ":");
+            user.getField().showShips();
+
+            System.out.println("Enemy ships:");
+            enemy.getField().showShips();
+
+            System.out.println("Player " + user.getPlayerName() + " shoots first: ");
+            game(user, enemy);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    static void startGame() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Enter player name, please: ");
-        Player user = new Player(reader.readLine());
-        Robot enemy = new Robot("Enemy");
-        System.out.println("Start game!");
-//        System.out.println("Корабли игрока " + user.getPlayerName() + ":");
-//        user.getField().showShips();
-//        System.out.println("");
-        System.out.println("Enemy ships:");
-        enemy.getField().showShips();
-        System.out.println("Player " + user.getPlayerName() + " shoots first: ");
-
-        game(user, enemy);
-        reader.close();
     }
 
     static void game(Player user, Robot enemy) throws IOException {

@@ -3,7 +3,7 @@ package com.seafight.my_first_game;
 import java.util.ArrayList;
 
 public class FieldOfPlayer {
-    private String alphabet = "АБВГДЕЖЗИК";
+    private String alphabet = "ABCDEFGHIJ";
     private ArrayList<String> availableShots = initializeCells();
     private Ship[] ships = initializeShips();
     private int amountOfShip = 10;
@@ -22,15 +22,15 @@ public class FieldOfPlayer {
             if (ships[k].getCellsOfShip().contains(shot)) {
                 ships[k].getCellsOfShip().remove(shot);
                 if (ships[k].getCellsOfShip().size() == 0) {
-                    value = "Попадание! " + ships[k].getName() + " потоплен!";
+                    value = "Hit! " + ships[k].getName() + " is sunk!";
                     amountOfShip--;
                     break;
                 } else {
-                    value = "Попадание! " + ships[k].getName() + " подбит!";
+                    value = "Hit! " + ships[k].getName() + " is wrecked!";
                     break;
                 }
             } else
-                value = "Промах!";
+                value = "Miss!";
         }
         System.out.println(value);
     }
@@ -49,7 +49,7 @@ public class FieldOfPlayer {
 
     private Ship[] initializeShips() {
         Ship[] ships = new Ship[10];
-        String[] names = {"однопалубный", "двухпалубный", "трёхпалубный", "четырёхпалубный"};
+        String[] names = {"single deck ship", "double deck ship", "three deck ship", "four deck ship"};
         int count = 0;
         for (int i = 4; i > 0; i--) {
             int num = i;
@@ -187,9 +187,10 @@ public class FieldOfPlayer {
             System.out.println("");
         }
         for (Ship sh : ships) {
-            System.out.print(sh.getName() + " с ячейками: ");
+            System.out.print(sh.getName() + " with cells: ");
             System.out.print(sh + " Size: ");
             System.out.println(sh.getSize());
         }
+        System.out.println();
     }
 }

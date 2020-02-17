@@ -3,7 +3,7 @@ package com.seafight.my_first_game;
 public class Player {
     private String playerName;
     private FieldOfPlayer field = new FieldOfPlayer();
-    private String alphabet = "АБВГДЕЖЗИК";
+    private String alphabet = "ABCDEFGHIJ";
 
     public String getPlayerName() {
         return playerName;
