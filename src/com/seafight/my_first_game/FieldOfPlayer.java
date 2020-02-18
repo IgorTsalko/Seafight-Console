@@ -1,11 +1,13 @@
 package com.seafight.my_first_game;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FieldOfPlayer {
     private String alphabet = "ABCDEFGHIJ";
     private ArrayList<String> availableShots = initializeCells();
     private Ship[] ships = initializeShips();
+    private String deletedCells = "";
     private int amountOfShip = 10;
 
     public ArrayList<String> getAvailableShots() {
@@ -17,20 +19,19 @@ public class FieldOfPlayer {
     }
 
     void checkHit(String shot) {
-        String value = null;
-        for (int k = 0; k < ships.length; k++) {
-            if (ships[k].getCellsOfShip().contains(shot)) {
-                ships[k].getCellsOfShip().remove(shot);
-                if (ships[k].getCellsOfShip().size() == 0) {
-                    value = "Hit! " + ships[k].getName() + " is sunk!";
+        String value = "Miss!";
+        for (Ship ship : ships) {
+            if (ship.getCellsOfShip().contains(shot)) {
+                ship.getCellsOfShip().remove(shot);
+                if (ship.getCellsOfShip().size() == 0) {
+                    value = "Hit! " + ship.getName() + " is sunk!";
                     amountOfShip--;
-                    break;
                 } else {
-                    value = "Hit! " + ships[k].getName() + " is wrecked!";
-                    break;
+                    value = "Hit! " + ship.getName() + " is wrecked!";
                 }
-            } else
-                value = "Miss!";
+                deletedCells += shot + " ";
+                break;
+            }
         }
         System.out.println(value);
     }
@@ -52,9 +53,8 @@ public class FieldOfPlayer {
         String[] names = {"single deck ship", "double deck ship", "three deck ship", "four deck ship"};
         int count = 0;
         for (int i = 4; i > 0; i--) {
-            int num = i;
             for (int j = i; j < 5; j++) {
-                ships[count++] = (new Ship(names[i-1], num));
+                ships[count++] = (new Ship(names[i-1], i));
             }
         }
         placementShips(ships);
@@ -170,27 +170,43 @@ public class FieldOfPlayer {
         return value;
     }
 
-    void showShips() {
+    public void printShips() {
+        printShips(availableShots);
+    }
+
+    public void printShips(List<String> availableShots) {
         for (int i = 1; i <= 10; i++) {
             for (int j = 0; j < 10; j++) {
                 String cell = String.valueOf(alphabet.charAt(j)) + i;
-                String value = "null";
-                for (int k = 0; k < ships.length; k++) {
-                    if (ships[k].getCellsOfShip().contains(cell)) {
-                        value = "[ ]";
-                        break;
-                    } else
-                        value = "...";
+                String value;
+
+                if (!availableShots.contains(cell) && deletedCells.contains(cell)) {
+                    value = "[X]";
+                } else if (!availableShots.contains(cell) && !deletedCells.contains(cell)) {
+                    value = ".X.";
+                } else {
+                    value = "...";
+                    for (Ship ship : ships) {
+                        if (ship.getCellsOfShip().contains(cell)) {
+                            value = "[ ]";
+                            break;
+                        }
+                    }
                 }
                 System.out.print(value);
             }
-            System.out.println("");
+            System.out.println();
         }
+//        showNumbersOfAllCells();
+
+        System.out.println();
+    }
+
+    private void showNumbersOfAllCells() {
         for (Ship sh : ships) {
             System.out.print(sh.getName() + " with cells: ");
             System.out.print(sh + " Size: ");
             System.out.println(sh.getSize());
         }
-        System.out.println();
     }
 }

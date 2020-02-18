@@ -9,43 +9,31 @@ public class Game {
     private static Game seaFight = new Game();
 
     public static void main(String[] args) {
-        seaFight.startGame();
-    }
-
-    private void startGame() {
         try (
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))
         ) {
             System.out.print("Enter player name, please: ");
             Player user = new Player(reader.readLine());
             Robot enemy = new Robot("Enemy");
-            System.out.println("Start game!");
+            System.out.println("Start game!\n");
 
-            System.out.println("Player ships " + user.getPlayerName() + ":");
-            user.getField().showShips();
+            System.out.println("Ships player " + user.getPlayerName() + ":");
+            user.getField().printShips();
 
             System.out.println("Enemy ships:");
-            enemy.getField().showShips();
+            enemy.getField().printShips();
 
             System.out.println("Player " + user.getPlayerName() + " shoots first: ");
-            game(user, enemy);
+            seaFight.startGame(user, enemy, reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    static void game(Player user, Robot enemy) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private void startGame(Player user, Robot enemy, BufferedReader reader) {
         while (true) {
-            System.out.print(user.getPlayerName() + " your turn: ");
-            String shotOfUser = reader.readLine();
-            user.getField().getAvailableShots().remove(shotOfUser);
-            enemy.checkShot(shotOfUser);
-
-            String shotOfEnemy = enemy.shotOfRobot();
-            System.out.println("Now shoots the enemy, cell " + shotOfEnemy);
-            enemy.getField().getAvailableShots().remove(shotOfEnemy);
-            user.getField().checkHit(shotOfEnemy);
+            user.shot(enemy, reader);
+            enemy.shot(user, reader);
 
             if (user.getField().getAmountOfShip() == 0) {
                 System.out.println("Game over! The enemy won!");
